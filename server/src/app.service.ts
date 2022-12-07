@@ -13,6 +13,16 @@ export class AppService {
     return { result: data.firstNumber + data.secondNumber };
   }
 
+  subtraction(data: Input): { result: number } {
+    if (data.firstNumber > Number.MAX_SAFE_INTEGER) {
+      throw new BadRequestException('firstNumber is too big');
+    }
+    if (data.secondNumber > Number.MAX_SAFE_INTEGER) {
+      throw new BadRequestException('secondNumber is too big');
+    }
+    return { result: data.firstNumber - data.secondNumber };
+  }
+
   multiple(data: Input): { result: number } {
     if (data.firstNumber > Number.MAX_SAFE_INTEGER) {
       throw new BadRequestException('firstNumber is too big');
@@ -25,6 +35,7 @@ export class AppService {
     }
     return { result: data.firstNumber * data.secondNumber };
   }
+
 
   divide(data: Input): { result: number } {
     if (data.firstNumber > Number.MAX_SAFE_INTEGER) {
@@ -41,4 +52,5 @@ export class AppService {
     }
     return { result: data.firstNumber / data.secondNumber };
   }
+
 }
