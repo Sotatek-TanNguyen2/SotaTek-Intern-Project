@@ -25,6 +25,12 @@ export class AppController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @Post('logarit')
+  logarit(@Body() data: Input): { result: number } {
+    return this.appService.logarit(data);
+  }
+  
+  @HttpCode(HttpStatus.OK)
   @Post('power')
   power(@Body() data: Input): { result: number } {
     return this.appService.power(data);
