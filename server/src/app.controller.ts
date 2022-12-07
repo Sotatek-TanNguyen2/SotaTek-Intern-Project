@@ -11,4 +11,10 @@ export class AppController {
   add(@Body() data: Input): { result: number } {
     return this.appService.add(data);
   }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('divide')
+  divide(@Body() data: Input): { result: number } {
+    return this.appService.divide(data);
+  }
 }

@@ -12,4 +12,20 @@ export class AppService {
     }
     return { result: data.firstNumber + data.secondNumber };
   }
+
+  divide(data: Input): { result: number } {
+    if (data.firstNumber > Number.MAX_SAFE_INTEGER) {
+      throw new BadRequestException('firstNumber is too big');
+    }
+    if (data.secondNumber > Number.MAX_SAFE_INTEGER) {
+      throw new BadRequestException('secondNumber is too big');
+    }
+    if (data.secondNumber === 0) {
+      throw new BadRequestException('Cannot divide by zero');
+    }
+    if (data.firstNumber / data.secondNumber > Number.MAX_VALUE) {
+      throw new BadRequestException('Divide of 2 number is too big');
+    }
+    return { result: data.firstNumber / data.secondNumber };
+  }
 }
