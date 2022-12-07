@@ -84,21 +84,21 @@ describe('App (e2e)', () => {
         .expectStatus(200)
         .expectBody({ result: -2 });
     });
-    it('should return 24.09 if firstNumber = 39.77, secondNumber = 15.68', () => {
+    it('should return 24.090000000000003 if firstNumber = 39.77, secondNumber = 15.68', () => {
       return pactum
         .spec()
         .post('/subtraction')
         .withBody({ firstNumber: 39.77, secondNumber: 15.68 })
         .expectStatus(200)
-        .expectBody({ result: 24.09 });
+        .expectBody({ result: 24.090000000000003 });
     });
-    it('should return -24.09 if firstNumber = 15.68, secondNumber = 39.77', () => {
+    it('should return -24.090000000000003 if firstNumber = 15.68, secondNumber = 39.77', () => {
       return pactum
         .spec()
         .post('/subtraction')
         .withBody({ firstNumber: 15.68, secondNumber: 39.77 })
         .expectStatus(200)
-        .expectBody({ result: -24.09 });
+        .expectBody({ result: -24.090000000000003 });
     });
     it('should throw error if firstNumber is string', () => {
       return pactum
@@ -122,7 +122,6 @@ describe('App (e2e)', () => {
         .expectStatus(400);
     });
   });
-  // multiple 
   describe('POST /multiple', () => {
     it('should return 2 if firstNumber = 1, secondNumber = 2', () => {
       return pactum
@@ -278,6 +277,37 @@ describe('App (e2e)', () => {
           firstNumber: 1,
           secondNumber: Number.MIN_VALUE,
         })
+        .expectStatus(400);
+    });
+  });
+  describe('POST /factorial', () => {
+    it('should return 120 if n = 5', () => {
+      return pactum
+        .spec()
+        .post('/factorial')
+        .withBody({ n: 5 })
+        .expectStatus(200)
+        .expectBody({ result: 120 });
+    });
+    it('should throw an error if n is not integer or negative number', () => {
+      return pactum
+        .spec()
+        .post('/factorial')
+        .withBody({ n: 0.5 })
+        .expectStatus(400);
+    });
+    it('should throw an error if n is a string', () => {
+      return pactum
+        .spec()
+        .post('/factorial')
+        .withBody({ n: '10' })
+        .expectStatus(400);
+    });
+    it('should throw error if n is BigInt', () => {
+      return pactum
+        .spec()
+        .post('/factorial')
+        .withBody({ n: 1111111111111111111111111 })
         .expectStatus(400);
     });
   });

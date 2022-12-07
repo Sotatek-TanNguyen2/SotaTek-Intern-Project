@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AppService } from './app.service';
-import { Input } from './dto/input.dto';
+import { Input, GiaiThua } from './dto/input.dto';
 
 @Controller()
 export class AppController {
@@ -22,5 +22,15 @@ export class AppController {
   @Post('divide')
   divide(@Body() data: Input): { result: number } {
     return this.appService.divide(data);
+  }
+  @HttpCode(HttpStatus.OK)
+  @Post('subtraction')
+  subtraction(@Body() data: Input): { result: number } {
+    return this.appService.subtraction(data);
+  }
+  @HttpCode(HttpStatus.OK)
+  @Post('factorial')
+  factorial(@Body() data: GiaiThua): { result: number } {
+    return this.appService.factorial(data);
   }
 }
