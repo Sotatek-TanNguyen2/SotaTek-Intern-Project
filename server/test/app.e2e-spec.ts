@@ -66,63 +66,7 @@ describe('App (e2e)', () => {
     });
   });
 
-  // subtraction
-  describe('POST /subtraction', () => {
-    it('should return 2 if firstNumber = 4, secondNumber = 2', () => {
-      return pactum
-        .spec()
-        .post('/subtraction')
-        .withBody({ firstNumber: 4, secondNumber: 2 })
-        .expectStatus(200)
-        .expectBody({ result: 2 });
-    });
-    it('should return -2 if firstNumber = 2, secondNumber = 4', () => {
-      return pactum
-        .spec()
-        .post('/subtraction')
-        .withBody({ firstNumber: 2, secondNumber: 4 })
-        .expectStatus(200)
-        .expectBody({ result: -2 });
-    });
-    it('should return 24.09 if firstNumber = 39.77, secondNumber = 15.68', () => {
-      return pactum
-        .spec()
-        .post('/subtraction')
-        .withBody({ firstNumber: 39.77, secondNumber: 15.68 })
-        .expectStatus(200)
-        .expectBody({ result: 24.09 });
-    });
-    it('should return -24.09 if firstNumber = 15.68, secondNumber = 39.77', () => {
-      return pactum
-        .spec()
-        .post('/subtraction')
-        .withBody({ firstNumber: 15.68, secondNumber: 39.77 })
-        .expectStatus(200)
-        .expectBody({ result: -24.09 });
-    });
-    it('should throw error if firstNumber is string', () => {
-      return pactum
-        .spec()
-        .post('/subtraction')
-        .withBody({ firstNumber: '1999', secondNumber: 2409 })
-        .expectStatus(400);
-    });
-    it('should throw error if secondNumber is string', () => {
-      return pactum
-        .spec()
-        .post('/subtraction')
-        .withBody({ firstNumber: 1234567892409, secondNumber: '1999' })
-        .expectStatus(400);
-    });
-    it('should throw error if firstNumber or secondNumber is BigInt', () => {
-      return pactum
-        .spec()
-        .post('/subtraction')
-        .withBody({ firstNumber: 1111111111111111111111111, secondNumber: 2 })
-        .expectStatus(400);
-    });
-  });
-  // multiple 
+  // multiple
   describe('POST /multiple', () => {
     it('should return 2 if firstNumber = 1, secondNumber = 2', () => {
       return pactum
@@ -279,6 +223,137 @@ describe('App (e2e)', () => {
           secondNumber: Number.MIN_VALUE,
         })
         .expectStatus(400);
+    });
+  });
+
+  // Test function logarit
+  describe('POST /logarit', () => {
+    it('should return 2 if number = 4, base = 2', () => {
+      return pactum
+        .spec()
+        .post('/logarit')
+        .withBody({ firstNumber: 4, secondNumber: 2 })
+        .expectStatus(200)
+        .expectBody({ result: 2 });
+    });
+    it('should return 1.860488197617782 if number = 5.5, base = 2.5', () => {
+      return pactum
+        .spec()
+        .post('/logarit')
+        .withBody({ firstNumber: 5.5, secondNumber: 2.5 })
+        .expectStatus(200)
+        .expectBody({ result: 1.860488197617782 });
+    });
+    it('should return 0.5 if number = 2, base = 4', () => {
+      return pactum
+        .spec()
+        .post('/logarit')
+        .withBody({ firstNumber: 2, secondNumber: 4 })
+        .expectStatus(200)
+        .expectBody({ result: 0.5 });
+    });
+    it('should return 2.289224226994103 if number = 0.6, base = 0.8', () => {
+      return pactum
+        .spec()
+        .post('/logarit')
+        .withBody({ firstNumber: 0.6, secondNumber: 0.8 })
+        .expectStatus(200)
+        .expectBody({ result: 2.289224226994103 });
+    });
+    it('should throw error if number is string', () => {
+      return pactum
+        .spec()
+        .post('/logarit')
+        .withBody({ firstNumber: '123456789123', secondNumber: 2 })
+        .expectStatus(400);
+    });
+    it('should throw error if base is string', () => {
+      return pactum
+        .spec()
+        .post('/logarit')
+        .withBody({ firstNumber: 123456789123, secondNumber: '2121' })
+        .expectStatus(400);
+    });
+    it('should throw error if number is BigInt', () => {
+      return pactum
+        .spec()
+        .post('/logarit')
+        .withBody({ firstNumber: 1111111111111111111111111, secondNumber: 2 })
+        .expectStatus(400)
+        .expectJsonLike({
+          message: 'number is too big',
+        });
+    });
+    it('should throw error if base is BigInt', () => {
+      return pactum
+        .spec()
+        .post('/logarit')
+        .withBody({
+          firstNumber: 2,
+          secondNumber: 1111111111111111111111111,
+        })
+        .expectStatus(400)
+        .expectJsonLike({
+          message: 'base is too big',
+        });
+    });
+    it('should throw error if number < 0', () => {
+      return pactum
+        .spec()
+        .post('/logarit')
+        .withBody({ firstNumber: -1, secondNumber: 2 })
+        .expectStatus(400)
+        .expectJsonLike({
+          message:
+            'condition logarit undefined (defined for number > 0 and base > 0 and base != 1)',
+        });
+    });
+    it('should throw error if number = 0', () => {
+      return pactum
+        .spec()
+        .post('/logarit')
+        .withBody({ firstNumber: 0, secondNumber: 2 })
+        .expectStatus(400)
+        .expectJsonLike({
+          message:
+            'condition logarit undefined (defined for number > 0 and base > 0 and base != 1)',
+        });
+    });
+    it('should throw error if base < 0', () => {
+      return pactum
+        .spec()
+        .post('/logarit')
+        .withBody({ firstNumber: 2, secondNumber: -2 })
+        .expectStatus(400)
+        .expectJsonLike({
+          message:
+            'condition logarit undefined (defined for number > 0 and base > 0 and base != 1)',
+        });
+    });
+    it('should throw error if base = 0', () => {
+      return pactum
+        .spec()
+        .post('/logarit')
+        .withBody({ firstNumber: 2, secondNumber: 0 })
+        .expectStatus(400)
+        .expectJsonLike({
+          message:
+            'condition logarit undefined (defined for number > 0 and base > 0 and base != 1)',
+        });
+    });
+    it('should throw error if base = 1', () => {
+      return pactum
+        .spec()
+        .post('/logarit')
+        .withBody({
+          firstNumber: 2,
+          secondNumber: 1,
+        })
+        .expectStatus(400)
+        .expectJsonLike({
+          message:
+            'condition logarit undefined (defined for number > 0 and base > 0 and base != 1)',
+        });
     });
   });
 });

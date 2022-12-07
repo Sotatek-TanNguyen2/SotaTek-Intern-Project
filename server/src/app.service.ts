@@ -36,7 +36,6 @@ export class AppService {
     return { result: data.firstNumber * data.secondNumber };
   }
 
-
   divide(data: Input): { result: number } {
     if (data.firstNumber > Number.MAX_SAFE_INTEGER) {
       throw new BadRequestException('firstNumber is too big');
@@ -53,4 +52,22 @@ export class AppService {
     return { result: data.firstNumber / data.secondNumber };
   }
 
+  logarit(data: Input): { result: number } {
+    if (data.firstNumber > Number.MAX_SAFE_INTEGER) {
+      throw new BadRequestException('number is too big');
+    }
+    if (data.secondNumber > Number.MAX_SAFE_INTEGER) {
+      throw new BadRequestException('base is too big');
+    }
+    if (
+      data.firstNumber <= 0 ||
+      data.secondNumber <= 0 ||
+      data.secondNumber === 1
+    ) {
+      throw new BadRequestException(
+        'condition logarit undefined (defined for number > 0 and base > 0 and base != 1)'
+      );
+    }
+    return { result: Math.log(data.firstNumber) / Math.log(data.secondNumber) };
+  }
 }
