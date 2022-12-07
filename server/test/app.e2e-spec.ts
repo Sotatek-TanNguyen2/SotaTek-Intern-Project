@@ -25,7 +25,7 @@ describe('App (e2e)', () => {
   afterAll(async () => {
     await app.close();
   });
-
+  // add
   describe('POST /add', () => {
     it('should return 3 if firstNumber = 1, secondNumber = 2', () => {
       return pactum
@@ -66,6 +66,63 @@ describe('App (e2e)', () => {
     });
   });
 
+  // subtraction
+  describe('POST /subtraction', () => {
+    it('should return 2 if firstNumber = 4, secondNumber = 2', () => {
+      return pactum
+        .spec()
+        .post('/subtraction')
+        .withBody({ firstNumber: 4, secondNumber: 2 })
+        .expectStatus(200)
+        .expectBody({ result: 2 });
+    });
+    it('should return -2 if firstNumber = 2, secondNumber = 4', () => {
+      return pactum
+        .spec()
+        .post('/subtraction')
+        .withBody({ firstNumber: 2, secondNumber: 4 })
+        .expectStatus(200)
+        .expectBody({ result: -2 });
+    });
+    it('should return 24.09 if firstNumber = 39.77, secondNumber = 15.68', () => {
+      return pactum
+        .spec()
+        .post('/subtraction')
+        .withBody({ firstNumber: 39.77, secondNumber: 15.68 })
+        .expectStatus(200)
+        .expectBody({ result: 24.09 });
+    });
+    it('should return -24.09 if firstNumber = 15.68, secondNumber = 39.77', () => {
+      return pactum
+        .spec()
+        .post('/subtraction')
+        .withBody({ firstNumber: 15.68, secondNumber: 39.77 })
+        .expectStatus(200)
+        .expectBody({ result: -24.09 });
+    });
+    it('should throw error if firstNumber is string', () => {
+      return pactum
+        .spec()
+        .post('/subtraction')
+        .withBody({ firstNumber: '1999', secondNumber: 2409 })
+        .expectStatus(400);
+    });
+    it('should throw error if secondNumber is string', () => {
+      return pactum
+        .spec()
+        .post('/subtraction')
+        .withBody({ firstNumber: 1234567892409, secondNumber: '1999' })
+        .expectStatus(400);
+    });
+    it('should throw error if firstNumber or secondNumber is BigInt', () => {
+      return pactum
+        .spec()
+        .post('/subtraction')
+        .withBody({ firstNumber: 1111111111111111111111111, secondNumber: 2 })
+        .expectStatus(400);
+    });
+  });
+  // multiple 
   describe('POST /multiple', () => {
     it('should return 2 if firstNumber = 1, secondNumber = 2', () => {
       return pactum
