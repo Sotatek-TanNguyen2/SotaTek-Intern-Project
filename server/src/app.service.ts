@@ -1,5 +1,5 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { Input } from './dto/input.dto';
+import { GiaiThua, Input } from './dto/input.dto';
 
 @Injectable()
 export class AppService {
@@ -52,5 +52,20 @@ export class AppService {
     }
     return { result: data.firstNumber / data.secondNumber };
   }
-
+  factorial(data: GiaiThua): { result: number } {
+    if (data.n > Number.MAX_SAFE_INTEGER) {
+      throw new BadRequestException('n is too big');
+    }
+    if (data.n <0) {
+      throw new BadRequestException('n must bigger than 0');
+    }
+    if ( Number(data.n) === data.n && data.n % 1 !== 0 ){
+      throw new BadRequestException('n can not be float number');
+    } 
+    let result = 1;
+    for (let i = 1; i <= data.n ; i++) {
+      result *= i;
+    }
+    return { result }; 
+  }
 }
