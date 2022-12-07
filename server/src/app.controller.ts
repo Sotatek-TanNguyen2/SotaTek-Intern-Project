@@ -23,11 +23,19 @@ export class AppController {
   divide(@Body() data: Input): { result: number } {
     return this.appService.divide(data);
   }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('power')
+  power(@Body() data: Input): { result: number } {
+    return this.appService.power(data);
+  }
+  
   @HttpCode(HttpStatus.OK)
   @Post('subtraction')
   subtraction(@Body() data: Input): { result: number } {
     return this.appService.subtraction(data);
   }
+  
   @HttpCode(HttpStatus.OK)
   @Post('factorial')
   factorial(@Body() data: GiaiThua): { result: number } {

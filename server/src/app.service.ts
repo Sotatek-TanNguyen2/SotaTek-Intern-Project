@@ -52,6 +52,23 @@ export class AppService {
     }
     return { result: data.firstNumber / data.secondNumber };
   }
+
+  power(data: Input): { result: number } {
+    if (data.firstNumber > Number.MAX_SAFE_INTEGER) {
+      throw new BadRequestException('firstNumber is too big');
+    }
+    if (data.secondNumber > Number.MAX_SAFE_INTEGER) {
+      throw new BadRequestException('secondNumber is too big');
+    }
+    if (data.firstNumber === 0 && data.secondNumber < 0) {
+      throw new BadRequestException('Cannot power zero by negative number');
+    }
+    if (data.firstNumber ** data.secondNumber > Number.MAX_SAFE_INTEGER) {
+      throw new BadRequestException('Power of two numbers are too big');
+    }
+    return { result: data.firstNumber ** data.secondNumber };
+  }
+  
   factorial(data: GiaiThua): { result: number } {
     if (data.n > Number.MAX_SAFE_INTEGER) {
       throw new BadRequestException('n is too big');

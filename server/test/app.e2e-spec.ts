@@ -280,6 +280,85 @@ describe('App (e2e)', () => {
         .expectStatus(400);
     });
   });
+  
+  describe('POST /power', () => {
+    it('should return 8 if firstNumber = 2, secondNumber = 3', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: 2, secondNumber: 3 })
+        .expectStatus(200)
+        .expectBody({ result: 8 });
+    });
+    it('should return 0.125 if firstNumber = 2, secondNumber = -3', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: 2, secondNumber: -3 })
+        .expectStatus(200)
+        .expectBody({ result: 0.125 });
+    });
+    it('should return 1 if firstNumber = 2, secondNumber = 0', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: 2, secondNumber: 0 })
+        .expectStatus(200)
+        .expectBody({ result: 1 });
+    });
+    it('should return 1 if firstNumber = 0, secondNumber = 0', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: 0, secondNumber: 0 })
+        .expectStatus(200)
+        .expectBody({ result: 1 });
+    });
+    it('should return 0 if firstNumber = 0, secondNumber = 2', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: 0, secondNumber: 2 })
+        .expectStatus(200)
+        .expectBody({ result: 0 });
+    });
+    it('should throw an error if first number is a string', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: '10', secondNumber: 5 })
+        .expectStatus(400);
+    });
+    it('should throw an error if second number is a string', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: 10, secondNumber: '5' })
+        .expectStatus(400);
+    });
+    it('should throw an error if firstNumber is 0 and secondNumber is negative', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: 0, secondNumber: -2 })
+        .expectStatus(400);
+    });
+    it('should throw an error if firstNumber or secondNumber is BigInt', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: 1111111111111111111111111, secondNumber: 2 })
+        .expectStatus(400);
+    });
+    it('should throw an error if secondNumber or secondNumber is BigInt', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: 2, secondNumber: 1111111111111111111111111 })
+        .expectStatus(400);
+    });
+  });
+           
   describe('POST /factorial', () => {
     it('should return 120 if n = 5', () => {
       return pactum
