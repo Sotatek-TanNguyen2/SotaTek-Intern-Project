@@ -158,4 +158,70 @@ describe('App (e2e)', () => {
         .expectStatus(400);
     });
   });
+
+  describe('POST /divide', () => {
+    it('should return 2 if firstNumber = 10, secondNumber = 5', () => {
+      return pactum
+        .spec()
+        .post('/divide')
+        .withBody({ firstNumber: 10, secondNumber: 5 })
+        .expectStatus(200)
+        .expectBody({ result: 2 });
+    });
+
+    it('should return 1.3 if firstNumber = 6.5, secondNumber = 5', () => {
+      return pactum
+        .spec()
+        .post('/divide')
+        .withBody({ firstNumber: 6.5, secondNumber: 5 })
+        .expectStatus(200)
+        .expectBody({ result: 1.3 });
+    });
+    it('should throw an error if first number is a string', () => {
+      return pactum
+        .spec()
+        .post('/divide')
+        .withBody({ firstNumber: '10', secondNumber: 5 })
+        .expectStatus(400);
+    });
+    it('should throw an error if second number is a string', () => {
+      return pactum
+        .spec()
+        .post('/divide')
+        .withBody({ firstNumber: 10, secondNumber: '5' })
+        .expectStatus(400);
+    });
+    it('should throw an error if second number is 0', () => {
+      return pactum
+        .spec()
+        .post('/divide')
+        .withBody({ firstNumber: 10, secondNumber: 0 })
+        .expectStatus(400);
+    });
+    it('should throw error if firstNumber or secondNumber is BigInt', () => {
+      return pactum
+        .spec()
+        .post('/divide')
+        .withBody({ firstNumber: 1111111111111111111111111, secondNumber: 2 })
+        .expectStatus(400);
+    });
+    it('divide with the result lest than 1', () => {
+      return pactum
+        .spec()
+        .post('/divide')
+        .withBody({ firstNumber: 4, secondNumber: 5 })
+        .expectStatus(200)
+        .expectBody({ result: 0.8 });
+    });
+    it('divide with the result is too big', () => {
+      return pactum
+        .spec()
+        .post('/divide')
+        .withBody({
+          firstNumber: 1,
+          secondNumber: Number.MIN_VALUE,
+        })
+        .expectStatus(400);
+    });
+  });
 });
