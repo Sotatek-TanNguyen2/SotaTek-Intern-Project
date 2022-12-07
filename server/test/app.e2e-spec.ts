@@ -66,7 +66,63 @@ describe('App (e2e)', () => {
     });
   });
 
-  // multiple
+  // subtraction
+  describe('POST /subtraction', () => {
+    it('should return 2 if firstNumber = 4, secondNumber = 2', () => {
+      return pactum
+        .spec()
+        .post('/subtraction')
+        .withBody({ firstNumber: 4, secondNumber: 2 })
+        .expectStatus(200)
+        .expectBody({ result: 2 });
+    });
+    it('should return -2 if firstNumber = 2, secondNumber = 4', () => {
+      return pactum
+        .spec()
+        .post('/subtraction')
+        .withBody({ firstNumber: 2, secondNumber: 4 })
+        .expectStatus(200)
+        .expectBody({ result: -2 });
+    });
+    it('should return 24.090000000000003 if firstNumber = 39.77, secondNumber = 15.68', () => {
+      return pactum
+        .spec()
+        .post('/subtraction')
+        .withBody({ firstNumber: 39.77, secondNumber: 15.68 })
+        .expectStatus(200)
+        .expectBody({ result: 24.090000000000003 });
+    });
+    it('should return -24.090000000000003 if firstNumber = 15.68, secondNumber = 39.77', () => {
+      return pactum
+        .spec()
+        .post('/subtraction')
+        .withBody({ firstNumber: 15.68, secondNumber: 39.77 })
+        .expectStatus(200)
+        .expectBody({ result: -24.090000000000003 });
+    });
+    it('should throw error if firstNumber is string', () => {
+      return pactum
+        .spec()
+        .post('/subtraction')
+        .withBody({ firstNumber: '1999', secondNumber: 2409 })
+        .expectStatus(400);
+    });
+    it('should throw error if secondNumber is string', () => {
+      return pactum
+        .spec()
+        .post('/subtraction')
+        .withBody({ firstNumber: 1234567892409, secondNumber: '1999' })
+        .expectStatus(400);
+    });
+    it('should throw error if firstNumber or secondNumber is BigInt', () => {
+      return pactum
+        .spec()
+        .post('/subtraction')
+        .withBody({ firstNumber: 1111111111111111111111111, secondNumber: 2 })
+        .expectStatus(400);
+    });
+  });
+
   describe('POST /multiple', () => {
     it('should return 2 if firstNumber = 1, secondNumber = 2', () => {
       return pactum
@@ -225,7 +281,7 @@ describe('App (e2e)', () => {
         .expectStatus(400);
     });
   });
-
+  
   // Test function logarit
   describe('POST /logarit', () => {
     it('should return 2 if number = 4, base = 2', () => {
@@ -354,6 +410,116 @@ describe('App (e2e)', () => {
           message:
             'condition logarit undefined (defined for number > 0 and base > 0 and base != 1)',
         });
+      });
+  });
+  
+  describe('POST /power', () => {
+    it('should return 8 if firstNumber = 2, secondNumber = 3', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: 2, secondNumber: 3 })
+        .expectStatus(200)
+        .expectBody({ result: 8 });
+    });
+    it('should return 0.125 if firstNumber = 2, secondNumber = -3', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: 2, secondNumber: -3 })
+        .expectStatus(200)
+        .expectBody({ result: 0.125 });
+    });
+    it('should return 1 if firstNumber = 2, secondNumber = 0', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: 2, secondNumber: 0 })
+        .expectStatus(200)
+        .expectBody({ result: 1 });
+    });
+    it('should return 1 if firstNumber = 0, secondNumber = 0', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: 0, secondNumber: 0 })
+        .expectStatus(200)
+        .expectBody({ result: 1 });
+    });
+    it('should return 0 if firstNumber = 0, secondNumber = 2', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: 0, secondNumber: 2 })
+        .expectStatus(200)
+        .expectBody({ result: 0 });
+    });
+    it('should throw an error if first number is a string', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: '10', secondNumber: 5 })
+        .expectStatus(400);
+    });
+    it('should throw an error if second number is a string', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: 10, secondNumber: '5' })
+        .expectStatus(400);
+    });
+    it('should throw an error if firstNumber is 0 and secondNumber is negative', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: 0, secondNumber: -2 })
+        .expectStatus(400);
+    });
+    it('should throw an error if firstNumber or secondNumber is BigInt', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: 1111111111111111111111111, secondNumber: 2 })
+        .expectStatus(400);
+    });
+    it('should throw an error if secondNumber or secondNumber is BigInt', () => {
+      return pactum
+        .spec()
+        .post('/power')
+        .withBody({ firstNumber: 2, secondNumber: 1111111111111111111111111 })
+        .expectStatus(400);
+    });
+  });
+           
+  describe('POST /factorial', () => {
+    it('should return 120 if n = 5', () => {
+      return pactum
+        .spec()
+        .post('/factorial')
+        .withBody({ n: 5 })
+        .expectStatus(200)
+        .expectBody({ result: 120 });
+    });
+    it('should throw an error if n is not integer or negative number', () => {
+      return pactum
+        .spec()
+        .post('/factorial')
+        .withBody({ n: 0.5 })
+        .expectStatus(400);
+    });
+    it('should throw an error if n is a string', () => {
+      return pactum
+        .spec()
+        .post('/factorial')
+        .withBody({ n: '10' })
+        .expectStatus(400);
+    });
+    it('should throw error if n is BigInt', () => {
+      return pactum
+        .spec()
+        .post('/factorial')
+        .withBody({ n: 1111111111111111111111111 })
+        .expectStatus(400);
     });
   });
 });
